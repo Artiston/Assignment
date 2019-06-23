@@ -71,9 +71,14 @@
     		<groupId>org.junit.jupiter</groupId>
     		<artifactId>junit-jupiter-engine</artifactId>
     		<version>5.4.2</version>
-    	<scope>test</scope>
-</dependency>
-				
+    		<scope>test</scope>   	
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
+		<dependency>
+    		<groupId>com.sun.mail</groupId>
+    		<artifactId>javax.mail</artifactId>
+    		<version>1.4.4</version>
+		</dependency>
   </dependencies>
   <build>
     <finalName>WaesComparator</finalName>
@@ -97,6 +102,48 @@
                     <version>1.2.0</version>
                 </dependency>
             </dependencies>
+            <configuration>
+       <!-- Skip the default running of this plug-in (or everything is run twice...see below) -->
+       <skip>true</skip>
+       <!-- Show 100% of the lines from the stack trace (doesn't work) -->
+       <trimStackTrace>false</trimStackTrace>
+    </configuration>
+    <executions>
+       <execution>
+          <id>unit-tests</id>
+          <phase>test</phase>
+          <goals>
+             <goal>test</goal>
+          </goals>
+          <configuration>
+                <!-- Never skip running the tests when the test phase is invoked -->
+                <skip>false</skip>
+             <includes>
+                   <!-- Include unit tests within integration-test phase. -->
+                <include>**/*Test.java</include>
+             </includes>
+             <excludes>
+               <!-- Exclude integration tests within (unit) test phase. -->
+                <exclude>**/*IT.java</exclude>
+            </excludes>
+          </configuration>
+       </execution>
+       <execution>
+          <id>integration-tests</id>
+          <phase>integration-test</phase>
+          <goals>
+             <goal>test</goal>
+          </goals>
+          <configuration>
+            <!-- Never skip running the tests when the integration-test phase is invoked -->
+             <skip>false</skip>
+             <includes>
+               <!-- Include integration tests within integration-test phase. -->
+               <include>**/*IT.java</include>
+             </includes>
+          </configuration>
+       </execution>
+    </executions>
         </plugin>
         </plugins>
   </build>
